@@ -1,4 +1,5 @@
-import json, urllib, zipfile, os
+import json, zipfile, os
+from urllib.request import urlopen, urlretrieve
 
 def main():
     # Slack token
@@ -6,7 +7,7 @@ def main():
     print('Start downloading...')
 
     emoji_download_url = 'https://slack.com/api/emoji.list?token=%s' % token
-    url_response = urllib.urlopen(emoji_download_url)
+    url_response = urlopen(emoji_download_url)
     data = json.loads(url_response.read())
     if data['ok']:
         emojis = data['emoji']
@@ -18,7 +19,7 @@ def main():
                 file_name = index + extension
                 try:
                     # Downloads emoji image from url.
-                    urllib.urlretrieve(emojis[index], file_name)
+                    urlretrieve(emojis[index], file_name)
                     # Writes image file to a zip file.
                     emoji_zip_file.write(file_name)
                     # Deletes image file after write into zip file.
